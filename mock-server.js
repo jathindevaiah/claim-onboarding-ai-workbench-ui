@@ -7,7 +7,7 @@ const upload = multer();
 app.use(cors());
 
 app.post("/api/mapping", upload.any(), (req, res) => {
-  const fields = Array.from({ length: 10 }, (_, i) => ({
+  const fields = Array.from({ length: 15 }, (_, i) => ({
     sourceField: `Field_${i + 1}`,
     targetField: `/claim/v1/claims.field_${i + 1}`,
     startPosition: `${i * 10 + 1}`,

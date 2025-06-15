@@ -26,62 +26,64 @@ const MappingTable = ({ data, onSave }) => {
 
   return (
     <>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Source Schema</th>
-            <th>Destination Schema</th>
-            <th>Transformation Rule</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {editedData.map((row, index) => (
-            <tr key={index}>
-              <td>{row.sourceField}</td>
-              <td>
-                {editingRow === index ? (
-                  <Form.Control value={row.targetField} onChange={(e) => handleChange(index, "targetField", e.target.value)} />
-                ) : (
-                  row.targetField
-                )}
-              </td>
-              <td>
-                {editingRow === index ? (
-                  <Form.Control
-                    value={row.rules.join("; ")}
-                    onChange={(e) =>
-                      handleChange(
-                        index,
-                        "rules",
-                        e.target.value.split(";").map((r) => r.trim())
-                      )
-                    }
-                  />
-                ) : (
-                  row.rules.join("; ")
-                )}
-              </td>
-              <td>
-                {editingRow === index ? (
-                  <>
-                    <Button variant="success" size="sm" onClick={handleSave}>
-                      <FaCheck />
-                    </Button>{" "}
-                    <Button variant="outline-danger" size="sm" onClick={handleCancel}>
-                      <FaTimes />
-                    </Button>
-                  </>
-                ) : (
-                  <Button variant="outline-primary" size="sm" onClick={() => handleEdit(index)}>
-                    <FaPencilAlt />
-                  </Button>
-                )}
-              </td>
+      <div style={{ maxHeight: "500px", overflowY: editedData.length > 10 ? "auto" : "visible" }}>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Source Schema</th>
+              <th>Destination Schema</th>
+              <th>Transformation Rule</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {editedData.map((row, index) => (
+              <tr key={index}>
+                <td>{row.sourceField}</td>
+                <td>
+                  {editingRow === index ? (
+                    <Form.Control value={row.targetField} onChange={(e) => handleChange(index, "targetField", e.target.value)} />
+                  ) : (
+                    row.targetField
+                  )}
+                </td>
+                <td>
+                  {editingRow === index ? (
+                    <Form.Control
+                      value={row.rules.join("; ")}
+                      onChange={(e) =>
+                        handleChange(
+                          index,
+                          "rules",
+                          e.target.value.split(";").map((r) => r.trim())
+                        )
+                      }
+                    />
+                  ) : (
+                    row.rules.join("; ")
+                  )}
+                </td>
+                <td>
+                  {editingRow === index ? (
+                    <>
+                      <Button variant="success" size="sm" onClick={handleSave}>
+                        <FaCheck />
+                      </Button>{" "}
+                      <Button variant="outline-danger" size="sm" onClick={handleCancel}>
+                        <FaTimes />
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="outline-primary" size="sm" onClick={() => handleEdit(index)}>
+                      <FaPencilAlt />
+                    </Button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       <div className="justify-content-center mt-3">
         <Button variant="primary" onClick={() => onSave(editedData)}>

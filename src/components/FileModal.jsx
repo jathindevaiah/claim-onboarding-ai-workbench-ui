@@ -43,7 +43,7 @@ const FileModal = ({ show, onClose, onSubmit }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleCancel}>
+    <Modal show={show} onHide={handleCancel} centered>
       <Modal.Header closeButton>
         <Modal.Title>Select Data Files</Modal.Title>
       </Modal.Header>

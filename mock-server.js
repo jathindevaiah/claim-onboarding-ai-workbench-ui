@@ -14,7 +14,7 @@ app.post("/api/mapping", upload.any(), (req, res) => {
     endPosition: `${i * 10 + 10}`,
     dataType: `X(10)`,
     transformationNeeded: "no",
-    rules: ["Trim whitespace", "Convert flag to boolean"],
+    rules: i % 3 === 0 ? ["Trim whitespace"] : i % 3 === 1 ? ["Convert flag to boolean"] : [],
   }));
 
   res.json({

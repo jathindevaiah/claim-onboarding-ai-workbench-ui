@@ -54,7 +54,7 @@ const FileModal = ({ show, onClose, onSubmit }) => {
             <Form.Control type="file" onChange={(e) => handleFileChange(e, "source")} ref={sourceInputRef} aria-label="Select source data file" />
             {sourceFile && (
               <>
-                <span>{sourceFile.name}</span>
+                {/* <span>{sourceFile.name}</span> */}
                 <Button variant="outline-danger" size="sm" onClick={() => removeFile("source")} aria-label="Remove source data file">
                   <FaTimes />
                 </Button>
@@ -68,7 +68,6 @@ const FileModal = ({ show, onClose, onSubmit }) => {
             <Form.Control type="file" onChange={(e) => handleFileChange(e, "target")} ref={targetInputRef} aria-label="Select target mapping file" />
             {targetFile && (
               <>
-                <span>{targetFile.name}</span>
                 <Button variant="outline-danger" size="sm" onClick={() => removeFile("target")} aria-label="Remove target mapping file">
                   <FaTimes />
                 </Button>

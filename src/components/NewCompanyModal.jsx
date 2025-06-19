@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
-const NewProjectModal = ({ show, onClose, onSubmit }) => {
-  const [projectName, setProjectName] = useState("");
+const NewCompanyModal = ({ show, onClose, onSubmit }) => {
+  const [companyName, setCompanyName] = useState("");
 
   if (!show) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (projectName.trim()) {
-      onSubmit(projectName.trim());
-      setProjectName("");
+    if (companyName.trim()) {
+      onSubmit(companyName.trim());
+      setCompanyName("");
       onClose();
     }
   };
@@ -42,14 +42,14 @@ const NewProjectModal = ({ show, onClose, onSubmit }) => {
           boxShadow: "0 2px 16px rgba(0,0,0,0.15)",
         }}
       >
-        <h5>Add New Project</h5>
+        <h5>Add New Company</h5>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
             className="form-control mb-3"
-            placeholder="Project name"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
+            placeholder="Company name"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
             autoFocus
           />
           <div className="d-flex justify-content-end">
@@ -66,4 +66,4 @@ const NewProjectModal = ({ show, onClose, onSubmit }) => {
   );
 };
 
-export default NewProjectModal;
+export default NewCompanyModal;

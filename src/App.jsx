@@ -53,10 +53,10 @@ const App = () => {
     formData.append("schemaFile", targetFile);
 
     setLoading(true);
+    setShowModal(false);
     try {
       const response = await axios.post("http://localhost:3000/api/mapping", formData);
       setMappingData(response.data.mapping.data);
-      setShowModal(false);
 
       // Add uploaded file names to the selected project under the selected company
       if (selectedCompany && selectedProject) {
@@ -78,11 +78,11 @@ const App = () => {
       },
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    saveAs(blob, "mapping.json");
+    saveAs(blob, `${selectedProject}_mapping.json`);
 
     // Add mapping.json to the selected project under the selected company
     if (selectedCompany && selectedProject) {
-      handleAddMappingFile(selectedCompany, selectedProject, "mapping.json");
+      handleAddMappingFile(selectedCompany, selectedProject, `${selectedProject}_mapping.json`);
     }
   };
 

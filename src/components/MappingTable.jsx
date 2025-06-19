@@ -30,8 +30,8 @@ const MappingTable = ({ data, onSave }) => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Source Schema</th>
               <th>Destination Schema</th>
+              <th>Source Schema</th>
               <th>Transformation Rule</th>
               <th></th>
             </tr>
@@ -39,12 +39,12 @@ const MappingTable = ({ data, onSave }) => {
           <tbody>
             {editedData.map((row, index) => (
               <tr key={index}>
-                <td>{row.sourceField}</td>
+                <td>{row.targetField}</td>
                 <td>
                   {editingRow === index ? (
-                    <Form.Control value={row.targetField} onChange={(e) => handleChange(index, "targetField", e.target.value)} />
+                    <Form.Control value={row.sourceField} onChange={(e) => handleChange(index, "sourceField", e.target.value)} />
                   ) : (
-                    row.targetField
+                    row.sourceField
                   )}
                 </td>
                 <td>
@@ -55,7 +55,6 @@ const MappingTable = ({ data, onSave }) => {
                         handleChange(
                           index,
                           "rules",
-                          // e.target.value.split(";").map((r) => r.trim())
                           e.target.value.split(";").map((r) => r)
                           // e.target.value
                         )

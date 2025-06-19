@@ -1,16 +1,27 @@
-// src/components/SpinnerOverlay.jsx
 import React from "react";
-import { Spinner } from "react-bootstrap";
 
 const SpinnerOverlay = ({ show }) => {
   if (!show) return null;
-
   return (
     <div
-      className="position-fixed w-100 h-100 top-0 start-0 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
-      style={{ zIndex: 1050 }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        background: "rgba(0,0,0,0.2)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 2000,
+      }}
     >
-      <Spinner animation="border" role="status" variant="light" />
+      <div className="spinner-border text-primary" style={{ width: 60, height: 60, fontSize: 32 }} role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+      <div style={{ marginTop: 24, fontSize: "1.25rem", color: "#23395d", fontWeight: "bold" }}>Creating mapping through AI magic!!</div>
     </div>
   );
 };

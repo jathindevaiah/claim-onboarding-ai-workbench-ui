@@ -20,14 +20,15 @@ const App = () => {
 
   const handleSubmitFiles = async (sourceFile, targetFile) => {
     const formData = new FormData();
-    formData.append("source", sourceFile);
-    formData.append("target", targetFile);
+    formData.append("dataDictionary", sourceFile);
+    formData.append("schemaFile", targetFile);
 
     setLoading(true);
+    setShowModal(false);
     try {
-      const response = await axios.post("/api/mapping", formData);
+      const response = await axios.post("http://localhost:3000/api/mapping", formData);
+      // const response = await axios.post("/api/mapping", formData);
       setMappingData(response.data.mapping.data);
-      setShowModal(false);
 
       if (selectedProject) {
         handleAddFilesToProject(selectedProject, [sourceFile.name, targetFile.name]);
@@ -79,48 +80,6 @@ const App = () => {
     );
   };
 
-  // return (
-  //   <div>
-  //     <Header />
-  //     <main
-  //       style={{
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         paddingTop: "100px",
-  //         paddingLeft: "20px",
-  //         paddingRight: "20px",
-  //         flex: 1,
-  //       }}
-  //     >
-  //       <h1 className="text-center mb-4">Data Mapping Tool</h1>
-  //       <p className="text-center mb-4">
-  //         Upload your source and target files to generate a mapping. You can then edit the mapping and download it as a JSON file.
-  //       </p>
-  //       <p className="text-center mb-4">Supported file formats: CSV, JSON, Excel (XLSX). Ensure the files are well-formed for accurate mapping.</p>
-  //       <div className="d-flex justify-content-center align-items-center">
-  //         {!mappingData && (
-  //           <button
-  //             className="btn btn-primary btn-lg px-5 py-3"
-  //             style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
-  //             onClick={() => setShowModal(true)}
-  //           >
-  //             Start Onboarding
-  //           </button>
-  //         )}
-  //       </div>
-
-  //       {mappingData && <MappingTable data={mappingData} onSave={handleSaveMapping} />}
-  //     </main>
-
-  //     <FileModal show={showModal} onClose={() => setShowModal(false)} onSubmit={handleSubmitFiles} />
-  //     <SpinnerOverlay show={loading} />
-  //     <Footer />
-  //   </div>
-  // );
-
-  // ...existing code...
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       {/* Left Pane */}
@@ -168,7 +127,7 @@ const App = () => {
           )}
           {selectedProject && (
             <>
-              <h1 className="text-center mb-4">{selectedProject}</h1>
+              <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
             </>
           )}
           <div className="d-flex justify-content-center align-items-center">
@@ -191,7 +150,6 @@ const App = () => {
         <Footer />
       </div>
 
-      {/* New Project Modal */}
       <NewProjectModal show={showNewProjectModal} onClose={() => setShowNewProjectModal(false)} onSubmit={handleCreateProject} />
     </div>
   );

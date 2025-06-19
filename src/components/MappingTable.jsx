@@ -55,7 +55,9 @@ const MappingTable = ({ data, onSave }) => {
                         handleChange(
                           index,
                           "rules",
-                          e.target.value.split(";").map((r) => r.trim())
+                          // e.target.value.split(";").map((r) => r.trim())
+                          e.target.value.split(";").map((r) => r)
+                          // e.target.value
                         )
                       }
                     />

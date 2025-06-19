@@ -3,23 +3,22 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
 
 const FileModal = ({ show, onClose, onSubmit }) => {
-  const [sourceFile, setSourceFile] = useState(null);
+  const [sourceFile1, setSourceFile1] = useState(null);
   const [targetFile, setTargetFile] = useState(null);
 
-  // refs for file inputs to reset their value manually
-  const sourceInputRef = useRef(null);
+  const sourceInputRef1 = useRef(null);
   const targetInputRef = useRef(null);
 
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
-    if (type === "source") setSourceFile(file);
+    if (type === "source1") setSourceFile1(file);
     else setTargetFile(file);
   };
 
   const removeFile = (type) => {
-    if (type === "source") {
-      setSourceFile(null);
-      if (sourceInputRef.current) sourceInputRef.current.value = "";
+    if (type === "source1") {
+      setSourceFile1(null);
+      if (sourceInputRef1.current) sourceInputRef1.current.value = "";
     } else {
       setTargetFile(null);
       if (targetInputRef.current) targetInputRef.current.value = "";
@@ -27,18 +26,18 @@ const FileModal = ({ show, onClose, onSubmit }) => {
   };
 
   const handleCancel = () => {
-    setSourceFile(null);
+    setSourceFile1(null);
     setTargetFile(null);
-    if (sourceInputRef.current) sourceInputRef.current.value = "";
+    if (sourceInputRef1.current) sourceInputRef1.current.value = "";
     if (targetInputRef.current) targetInputRef.current.value = "";
     onClose();
   };
 
   const handleSubmit = () => {
-    onSubmit(sourceFile, targetFile);
-    setSourceFile(null);
+    onSubmit(sourceFile1, targetFile);
+    setSourceFile1(null);
     setTargetFile(null);
-    if (sourceInputRef.current) sourceInputRef.current.value = "";
+    if (sourceInputRef1.current) sourceInputRef1.current.value = "";
     if (targetInputRef.current) targetInputRef.current.value = "";
   };
 
@@ -49,13 +48,12 @@ const FileModal = ({ show, onClose, onSubmit }) => {
       </Modal.Header>
       <Modal.Body>
         <Form.Group>
-          <Form.Label>Source Data File</Form.Label>
+          <Form.Label>Source Data Defintion</Form.Label>
           <div className="d-flex align-items-center gap-2">
-            <Form.Control type="file" onChange={(e) => handleFileChange(e, "source")} ref={sourceInputRef} aria-label="Select source data file" />
-            {sourceFile && (
+            <Form.Control type="file" onChange={(e) => handleFileChange(e, "source1")} ref={sourceInputRef1} aria-label="Select source data file 1" />
+            {sourceFile1 && (
               <>
-                {/* <span>{sourceFile.name}</span> */}
-                <Button variant="outline-danger" size="sm" onClick={() => removeFile("source")} aria-label="Remove source data file">
+                <Button variant="outline-danger" size="sm" onClick={() => removeFile("source1")} aria-label="Remove source data file 1">
                   <FaTimes />
                 </Button>
               </>
@@ -63,7 +61,7 @@ const FileModal = ({ show, onClose, onSubmit }) => {
           </div>
         </Form.Group>
         <Form.Group className="mt-3">
-          <Form.Label>Target Mapping File</Form.Label>
+          <Form.Label>Target Data Defintion</Form.Label>
           <div className="d-flex align-items-center gap-2">
             <Form.Control type="file" onChange={(e) => handleFileChange(e, "target")} ref={targetInputRef} aria-label="Select target mapping file" />
             {targetFile && (
@@ -80,7 +78,7 @@ const FileModal = ({ show, onClose, onSubmit }) => {
         <Button variant="secondary" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleSubmit} disabled={!sourceFile || !targetFile}>
+        <Button variant="primary" onClick={handleSubmit} disabled={!sourceFile1 || !targetFile}>
           Begin Mapping
         </Button>
       </Modal.Footer>

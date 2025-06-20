@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import CompaniesPane from "./components/CompaniesPane";
 import NewProjectModal from "./components/NewProjectModal";
 import NewCompanyModal from "./components/NewCompanyModal";
+import MappingSubmittedModal from "./components/MappingSubmittedModal";
 import Dashboard from "./components/Dashboard";
 import OnboardingProgress from "./components/OnboardingProgress";
 
@@ -23,6 +24,8 @@ const App = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showNewCompanyModal, setShowNewCompanyModal] = useState(false);
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+  const [showMappingSubmittedModal, setShowMappingSubmittedModal] = useState(false);
+  const [isMappingStarted, setIsMappingStarted] = useState(false);
 
   const [progress, setProgress] = useState({
     upload: false,
@@ -32,7 +35,6 @@ const App = () => {
     onboardingComplete: false,
   });
 
-  // ...existing code...
   const handleCreateCompany = (companyName) => {
     if (!companyName || companies.some((c) => c.name === companyName)) return;
     setCompanies([...companies, { name: companyName, projects: [] }]);
@@ -57,6 +59,7 @@ const App = () => {
   };
 
   const handleSubmitFiles = async (sourceFile, targetFile) => {
+    setIsMappingStarted(true);
     setProgress((prev) => ({ ...prev, upload: true }));
     const formData = new FormData();
     formData.append("dataDictionary", sourceFile);
@@ -99,10 +102,11 @@ const App = () => {
   };
 
   const handleSubmitMapping = () => {
-    setProgress((prev) => ({ ...prev, etlCompleted: true }));
-    setTimeout(() => {
-      setProgress((prev) => ({ ...prev, onboardingComplete: true }));
-    }, 5000);
+    // setProgress((prev) => ({ ...prev, etlCompleted: true }));
+    // setTimeout(() => {
+    //   setProgress((prev) => ({ ...prev, onboardingComplete: true }));
+    // }, 5000);
+    setShowMappingSubmittedModal(true);
   };
 
   const handleAddFilesToProject = (companyName, projectName, fileNames) => {
@@ -135,6 +139,20 @@ const App = () => {
     );
   };
 
+  const handleCloseMappingSubmittedModal = () => {
+    setShowMappingSubmittedModal(false);
+    setSelectedCompany(null);
+    setSelectedProject(null);
+    setMappingData(null);
+    setProgress({
+      upload: false,
+      mappingGenerated: false,
+      mappingSaved: false,
+      etlCompleted: false,
+      onboardingComplete: false,
+    });
+  };
+
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       {/* Left Pane */}
@@ -159,34 +177,36 @@ const App = () => {
           + Add TPA
         </button>
       </div>
-
-      {/* Main Content */}
-      <div style={{ flex: 1, background: "#f7f9fa", minHeight: "100vh" }}>
+      <div style={{ flex: 1, background: "#f7f9fa" }}>
         <Header />
         <main
           style={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            alignItems: "center",
+            // alignItems: "center",
             paddingTop: "100px",
-            paddingLeft: "20px",
-            paddingRight: "20px",
             flex: 1,
+            // height: "80%",
           }}
         >
-          {/* {!selectedCompany && !selectedProject && (
-            <>
-              <h1 className="text-center mb-4">Data Mapping Tool</h1>
-              <p className="text-center mb-4">Select or add a company to begin.</p>
-            </>
-          )} */}
+          {!selectedCompany && !selectedProject && (
+            <div style={{ flex: 1, margin: "20px" }}>
+              <Dashboard />
+            </div>
+          )}
 
-          {!selectedCompany && !selectedProject && <Dashboard />}
           {selectedCompany && !selectedProject && (
             <>
               <h2 className="text-center mb-4">{selectedCompany}</h2>
-              <button className="btn btn-primary" onClick={() => setShowNewProjectModal(true)}>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowNewProjectModal(true)}
+                style={{
+                  width: "25%",
+                  alignSelf: "center",
+                }}
+              >
                 + Add Client
               </button>
             </>
@@ -194,24 +214,38 @@ const App = () => {
           {selectedCompany && selectedProject && (
             <>
               <OnboardingProgress progress={progress} />
-              <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
-              <div className="d-flex justify-content-center align-items-center">
-                {!mappingData && (
-                  <button
-                    className="btn btn-primary"
-                    style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
-                    onClick={() => setShowModal(true)}
-                  >
-                    Start Onboarding
-                  </button>
-                )}
-              </div>
+              {/* <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
+            <div className="d-flex justify-content-center align-items-center">
+              {!mappingData && (
+            <button
+              className="btn btn-primary"
+              style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
+              onClick={() => setShowModal(true)}
+            >
+              Start Onboarding
+            </button>
+              )}
+            </div> */}
+              {!isMappingStarted && (
+                <>
+                  <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
+                  <div className="d-flex justify-content-center align-items-center">
+                    {!mappingData && (
+                      <button
+                        className="btn btn-primary btn-lg px-5 py-3"
+                        style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
+                        onClick={() => setShowModal(true)}
+                      >
+                        Start Onboarding
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+
               {mappingData && (
-                <div className="text-center mb-4">
+                <div className="text-center mb-4 mx-4">
                   <MappingTable data={mappingData} onSave={handleSaveMapping} onSubmit={handleSubmitMapping} progress={progress} />
-                  {/* <button className="btn btn-success mt-3" onClick={handleSubmitMapping} disabled={progress.etlCompleted}>
-                    Submit Mapping
-                  </button> */}
                 </div>
               )}
             </>
@@ -221,10 +255,10 @@ const App = () => {
         <SpinnerOverlay show={loading} />
         <Footer />
       </div>
-
       {/* Modals */}
       <NewCompanyModal show={showNewCompanyModal} onClose={() => setShowNewCompanyModal(false)} onSubmit={handleCreateCompany} />
       <NewProjectModal show={showNewProjectModal} onClose={() => setShowNewProjectModal(false)} onSubmit={handleCreateProject} />
+      <MappingSubmittedModal show={showMappingSubmittedModal} onClose={handleCloseMappingSubmittedModal} />
     </div>
   );
 };

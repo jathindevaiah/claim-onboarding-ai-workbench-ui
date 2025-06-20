@@ -9,7 +9,7 @@ const steps = [
 ];
 
 const OnboardingProgress = ({ progress }) => (
-  <div style={{ display: "flex", alignItems: "center", marginBottom: 32 }}>
+  <div style={{ display: "flex", alignItems: "center", marginBottom: 32, alignSelf: "center" }}>
     {steps.map((step, idx) => (
       <div key={step.key} style={{ display: "flex", alignItems: "center" }}>
         <div

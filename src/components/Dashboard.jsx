@@ -39,7 +39,7 @@ const sedwickData = {
 };
 
 const donutOptions = {
-  cutout: "70%",
+  cutout: "60%",
   plugins: {
     legend: { display: true, position: "bottom" },
     tooltip: { enabled: true },
@@ -80,7 +80,7 @@ const AverageTimeDial = ({ days }) => {
 
 const Dashboard = () => {
   return (
-    <div style={{ width: "100%", maxWidth: 1100, margin: "0 auto" }}>
+    <div style={{ width: "100%", maxWidth: 1400, margin: "100 auto" }}>
       <div style={{ display: "flex", gap: 24, marginBottom: 32 }}>
         <div
           style={{
@@ -126,18 +126,24 @@ const Dashboard = () => {
         </div>
       </div>
       <div style={{ display: "flex", gap: 32, alignItems: "flex-start", justifyContent: "center" }}>
-        <div style={{ flex: 2, background: "#fff", borderRadius: 8, padding: 24, minWidth: 320 }}>
+        <div style={{ flex: 2, background: "#fff", borderRadius: 8, padding: 24, minWidth: 200 }}>
           <div style={{ textAlign: "center", fontWeight: 600, marginBottom: 8 }}>Overall Average Time Per Step</div>
-          <Doughnut data={overallData} options={donutOptions} />
+          <div style={{ width: 300, height: 300, margin: "0 auto" }}>
+            <Doughnut data={overallData} options={donutOptions} width={200} height={200} />
+          </div>
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ background: "#fff", borderRadius: 8, padding: 16, minWidth: 180 }}>
             <div style={{ textAlign: "center", fontWeight: 600, marginBottom: 8 }}>Sunoco</div>
-            <Doughnut data={sunocoData} options={donutOptions} />
+            <div style={{ width: 200, height: 200, margin: "0 auto" }}>
+              <Doughnut data={sunocoData} options={donutOptions} width={100} height={100} />
+            </div>
           </div>
           <div style={{ background: "#fff", borderRadius: 8, padding: 16, minWidth: 180 }}>
             <div style={{ textAlign: "center", fontWeight: 600, marginBottom: 8 }}>Sedwick</div>
-            <Doughnut data={sedwickData} options={donutOptions} />
+            <div style={{ width: 200, height: 200, margin: "0 auto" }}>
+              <Doughnut data={sedwickData} options={donutOptions} width={100} height={100} />
+            </div>
           </div>
         </div>
       </div>

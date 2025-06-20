@@ -11,6 +11,7 @@ import CompaniesPane from "./components/CompaniesPane";
 import NewProjectModal from "./components/NewProjectModal";
 import NewCompanyModal from "./components/NewCompanyModal";
 import Dashboard from "./components/Dashboard";
+import OnboardingProgress from "./components/OnboardingProgress";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,6 +23,14 @@ const App = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showNewCompanyModal, setShowNewCompanyModal] = useState(false);
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+
+  const [progress, setProgress] = useState({
+    upload: false,
+    mappingGenerated: false,
+    mappingSaved: false,
+    etlCompleted: false,
+    onboardingComplete: false,
+  });
 
   // ...existing code...
   const handleCreateCompany = (companyName) => {
@@ -48,6 +57,7 @@ const App = () => {
   };
 
   const handleSubmitFiles = async (sourceFile, targetFile) => {
+    setProgress((prev) => ({ ...prev, upload: true }));
     const formData = new FormData();
     formData.append("dataDictionary", sourceFile);
     formData.append("schemaFile", targetFile);
@@ -57,6 +67,7 @@ const App = () => {
     try {
       const response = await axios.post("http://localhost:3000/api/mapping", formData);
       setMappingData(response.data.mapping.data);
+      setProgress((prev) => ({ ...prev, mappingGenerated: true }));
 
       // Add uploaded file names to the selected project under the selected company
       if (selectedCompany && selectedProject) {
@@ -84,6 +95,14 @@ const App = () => {
     if (selectedCompany && selectedProject) {
       handleAddMappingFile(selectedCompany, selectedProject, `${selectedProject}_mapping.json`);
     }
+    setProgress((prev) => ({ ...prev, mappingSaved: true }));
+  };
+
+  const handleSubmitMapping = () => {
+    setProgress((prev) => ({ ...prev, etlCompleted: true }));
+    setTimeout(() => {
+      setProgress((prev) => ({ ...prev, onboardingComplete: true }));
+    }, 5000);
   };
 
   const handleAddFilesToProject = (companyName, projectName, fileNames) => {
@@ -137,7 +156,7 @@ const App = () => {
           onSelectProject={handleSelectProject}
         />
         <button className="btn btn-outline-dark mt-3" style={{ width: "90%", marginLeft: "5%" }} onClick={() => setShowNewCompanyModal(true)}>
-          + Add Client
+          + Add TPA
         </button>
       </div>
 
@@ -156,24 +175,25 @@ const App = () => {
             flex: 1,
           }}
         >
-          {!selectedCompany && !selectedProject && (
+          {/* {!selectedCompany && !selectedProject && (
             <>
               <h1 className="text-center mb-4">Data Mapping Tool</h1>
               <p className="text-center mb-4">Select or add a company to begin.</p>
             </>
-          )}
+          )} */}
 
           {!selectedCompany && !selectedProject && <Dashboard />}
           {selectedCompany && !selectedProject && (
             <>
               <h2 className="text-center mb-4">{selectedCompany}</h2>
               <button className="btn btn-primary" onClick={() => setShowNewProjectModal(true)}>
-                + Add Project
+                + Add Client
               </button>
             </>
           )}
           {selectedCompany && selectedProject && (
             <>
+              <OnboardingProgress progress={progress} />
               <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
               <div className="d-flex justify-content-center align-items-center">
                 {!mappingData && (
@@ -186,7 +206,14 @@ const App = () => {
                   </button>
                 )}
               </div>
-              {mappingData && <MappingTable data={mappingData} onSave={handleSaveMapping} />}
+              {mappingData && (
+                <div className="text-center mb-4">
+                  <MappingTable data={mappingData} onSave={handleSaveMapping} onSubmit={handleSubmitMapping} progress={progress} />
+                  {/* <button className="btn btn-success mt-3" onClick={handleSubmitMapping} disabled={progress.etlCompleted}>
+                    Submit Mapping
+                  </button> */}
+                </div>
+              )}
             </>
           )}
         </main>

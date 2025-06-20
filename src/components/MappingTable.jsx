@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Table, Button, Form } from "react-bootstrap";
 import { FaPencilAlt, FaTimes, FaCheck } from "react-icons/fa";
 
-const MappingTable = ({ data, onSave }) => {
+const MappingTable = ({ data, onSave, onSubmit, progress }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [editedData, setEditedData] = useState(data);
 
@@ -86,9 +86,12 @@ const MappingTable = ({ data, onSave }) => {
         </Table>
       </div>
 
-      <div className="justify-content-center mt-3">
+      <div className="d-flex justify-content-center mt-3">
         <Button variant="primary" onClick={() => onSave(editedData)}>
           Save Mapping
+        </Button>
+        <Button variant="success" onClick={() => onSubmit()} disabled={progress.etlCompleted} className="ms-2">
+          Submit Mapping
         </Button>
       </div>
     </>

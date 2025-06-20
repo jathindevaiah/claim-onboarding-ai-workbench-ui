@@ -42,7 +42,7 @@ const NewCompanyModal = ({ show, onClose, onSubmit }) => {
           boxShadow: "0 2px 16px rgba(0,0,0,0.15)",
         }}
       >
-        <h5>Add New Company</h5>
+        <h5>Add New TPA</h5>
         <form onSubmit={handleSubmit}>
           <input
             type="text"

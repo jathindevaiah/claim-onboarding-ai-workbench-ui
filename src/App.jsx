@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
 import FileModal from "./components/FileModal";
-import MappingTable from "./components/MappingTable";
+// import MappingTable from "./components/MappingTable";
+import NewMappingTable from "./components/NewMappingTable";
 import SpinnerOverlay from "./components/SpinnerOverlay";
 import axios from "axios";
 import { saveAs } from "file-saver";
@@ -265,7 +266,7 @@ const App = () => {
 
                       {mappingData && (
                         <div className="text-center mb-4 mx-4">
-                          <MappingTable data={mappingData} onSave={handleSaveMapping} onSubmit={handleSubmitMapping} progress={progress} />
+                          <NewMappingTable data={mappingData} onSave={handleSaveMapping} onSubmit={handleSubmitMapping} progress={progress} />
                         </div>
                       )}
                     </>

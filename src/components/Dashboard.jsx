@@ -6,7 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const overallData = {
-  labels: ["Ingest to Map", "Ingest to Develop ETL", "Ingest to Validate", "Ingest to Load"],
+  labels: ["Mapping", "Develop ETL", "Validate", "Load"],
   datasets: [
     {
       data: [10, 15, 12, 8],
@@ -69,11 +69,11 @@ const AverageTimeDial = ({ days }) => {
           cx={radius}
           cy={radius}
         />
-        <text x="50%" y="50%" textAnchor="middle" dy=".3em" fontSize="1.5em" fill="#23395d" fontWeight="bold">
+        <text x="50%" y="50%" textAnchor="middle" dy=".3em" fontSize="2.5em" fill="#23395d" fontWeight="bold">
           {days}
         </text>
       </svg>
-      <div style={{ marginTop: 8, fontSize: 16, color: "#555" }}>Avg. Onboarding Days</div>
+      <div style={{ marginTop: 8, fontSize: 16, color: "#555" }}>Avg. Onboarding Time</div>
     </div>
   );
 };
@@ -92,7 +92,7 @@ const Dashboard = () => {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: 28, fontWeight: 700, color: "#23395d" }}>25</div>
+          <div style={{ fontSize: 50, fontWeight: 700, color: "#23395d" }}>3</div>
           <div style={{ fontSize: 16, color: "#555" }}>Total Clients Onboarded</div>
         </div>
         <div
@@ -105,7 +105,7 @@ const Dashboard = () => {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: 28, fontWeight: 700, color: "#23395d" }}>200</div>
+          <div style={{ fontSize: 50, fontWeight: 700, color: "#23395d" }}>2800</div>
           <div style={{ fontSize: 16, color: "#555" }}>Total Claims Onboarded (till date)</div>
         </div>
         <div

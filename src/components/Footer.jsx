@@ -4,7 +4,7 @@ import { Container, Navbar } from "react-bootstrap";
 
 const Footer = () => {
   return (
-    <Navbar bg="dark" variant="dark" className="fixed-bottom py-3 mt-auto">
+    <Navbar style={{ backgroundColor: "steelblue" }} className="fixed-bottom py-3 mt-auto">
       <Container className="text-white">
         <div className="small">
           <a href="/privacy" className="text-light text-decoration-none me-3">

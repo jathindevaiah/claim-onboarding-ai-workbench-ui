@@ -26,7 +26,7 @@ const ProjectsPane = ({ projects, selectedProject, onSelect }) => (
           {selectedProject === project.name && (
             <ul style={{ listStyle: "none", paddingLeft: "40px" }}>
               {project.files.map((file) => (
-                <li key={file} style={{ display: "flex", alignItems: "center", fontSize: "1rem" }}>
+                <li key={file} style={{ display: "flex", alignItems: "center", fontSize: "1rem", marginTop: "10px" }}>
                   <FaFile style={{ marginRight: 8, color: "#888" }} />
                   {file}
                 </li>

@@ -13,6 +13,7 @@ import NewCompanyModal from "./components/NewCompanyModal";
 import MappingSubmittedModal from "./components/MappingSubmittedModal";
 import Dashboard from "./components/Dashboard";
 import OnboardingProgress from "./components/OnboardingProgress";
+import LoginScreen from "./components/LoginScreen";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,6 +27,10 @@ const App = () => {
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
   const [showMappingSubmittedModal, setShowMappingSubmittedModal] = useState(false);
   const [isMappingStarted, setIsMappingStarted] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [loginError, setLoginError] = useState("");
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState("Claim Analyst"); // Default role
 
   const [progress, setProgress] = useState({
     upload: false,
@@ -34,6 +39,19 @@ const App = () => {
     etlCompleted: false,
     onboardingComplete: false,
   });
+
+  const handleLogin = (username) => {
+    setIsLoggedIn(true);
+    setUser({ username });
+    setRole("Claim Analyst");
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser(null);
+    setRole("Claim Analyst");
+    // Optionally reset other app state here
+  };
 
   const handleCreateCompany = (companyName) => {
     if (!companyName || companies.some((c) => c.name === companyName)) return;
@@ -154,67 +172,74 @@ const App = () => {
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      {/* Left Pane */}
-      <div
-        style={{
-          width: "260px",
-          borderRight: "1px solid #eee",
-          padding: "20px 0",
-          // background: "#23395d",
-          // color: "#fff",
-          minHeight: "100vh",
-        }}
-      >
-        <CompaniesPane
-          companies={companies}
-          selectedCompany={selectedCompany}
-          selectedProject={selectedProject}
-          onSelectCompany={handleSelectCompany}
-          onSelectProject={handleSelectProject}
-        />
-        <button className="btn btn-outline-dark mt-3" style={{ width: "90%", marginLeft: "5%" }} onClick={() => setShowNewCompanyModal(true)}>
-          + Add TPA
-        </button>
-      </div>
-      <div style={{ flex: 1, background: "#f7f9fa" }}>
-        <Header />
-        <main
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            // alignItems: "center",
-            paddingTop: "100px",
-            flex: 1,
-            // height: "80%",
-          }}
-        >
-          {!selectedCompany && !selectedProject && (
-            <div style={{ flex: 1, margin: "20px" }}>
-              <Dashboard />
+    <>
+      {!isLoggedIn ? (
+        <LoginScreen onLogin={handleLogin} />
+      ) : (
+        <div style={{ display: "flex", minHeight: "100vh" }}>
+          {/* Left Pane */}
+          {role !== "Claim VP" && (
+            <div
+              style={{
+                width: "260px",
+                borderRight: "1px solid #eee",
+                padding: "20px 0",
+                // background: "#23395d",
+                // color: "#fff",
+                minHeight: "100vh",
+              }}
+            >
+              <CompaniesPane
+                companies={companies}
+                selectedCompany={selectedCompany}
+                selectedProject={selectedProject}
+                onSelectCompany={handleSelectCompany}
+                onSelectProject={handleSelectProject}
+              />
+              <button className="btn btn-outline-dark mt-3" style={{ width: "90%", marginLeft: "5%" }} onClick={() => setShowNewCompanyModal(true)}>
+                + Add TPA
+              </button>
             </div>
           )}
-
-          {selectedCompany && !selectedProject && (
-            <>
-              <h2 className="text-center mb-4">{selectedCompany}</h2>
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowNewProjectModal(true)}
-                style={{
-                  width: "25%",
-                  alignSelf: "center",
-                }}
-              >
-                + Add Client
-              </button>
-            </>
-          )}
-          {selectedCompany && selectedProject && (
-            <>
-              <OnboardingProgress progress={progress} />
-              {/* <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
+          <div style={{ flex: 1, background: "#f7f9fa" }}>
+            {/* <Header /> */}
+            <Header isLoggedIn={isLoggedIn} role={role} setRole={setRole} onLogout={handleLogout} user={user} />
+            <main
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                // alignItems: "center",
+                paddingTop: "100px",
+                flex: 1,
+                // height: "80%",
+              }}
+            >
+              {role === "Claim VP" ? (
+                <div style={{ flex: 1, margin: "20px", textAlign: "-webkit-center" }}>
+                  <Dashboard />
+                </div>
+              ) : (
+                <>
+                  {selectedCompany && !selectedProject && (
+                    <>
+                      <h2 className="text-center mb-4">{selectedCompany}</h2>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => setShowNewProjectModal(true)}
+                        style={{
+                          width: "25%",
+                          alignSelf: "center",
+                        }}
+                      >
+                        + Add Client
+                      </button>
+                    </>
+                  )}
+                  {selectedCompany && selectedProject && (
+                    <>
+                      <OnboardingProgress progress={progress} />
+                      {/* <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
             <div className="d-flex justify-content-center align-items-center">
               {!mappingData && (
             <button
@@ -226,40 +251,44 @@ const App = () => {
             </button>
               )}
             </div> */}
-              {!isMappingStarted && (
-                <>
-                  <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
-                  <div className="d-flex justify-content-center align-items-center">
-                    {!mappingData && (
-                      <button
-                        className="btn btn-primary btn-lg px-5 py-3"
-                        style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
-                        onClick={() => setShowModal(true)}
-                      >
-                        Start Onboarding
-                      </button>
-                    )}
-                  </div>
+                      {!isMappingStarted && (
+                        <>
+                          <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
+                          <div className="d-flex justify-content-center align-items-center">
+                            {!mappingData && (
+                              <button
+                                className="btn btn-primary btn-lg px-5 py-3"
+                                style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
+                                onClick={() => setShowModal(true)}
+                              >
+                                Start Onboarding
+                              </button>
+                            )}
+                          </div>
+                        </>
+                      )}
+
+                      {mappingData && (
+                        <div className="text-center mb-4 mx-4">
+                          <MappingTable data={mappingData} onSave={handleSaveMapping} onSubmit={handleSubmitMapping} progress={progress} />
+                        </div>
+                      )}
+                    </>
+                  )}
                 </>
               )}
-
-              {mappingData && (
-                <div className="text-center mb-4 mx-4">
-                  <MappingTable data={mappingData} onSave={handleSaveMapping} onSubmit={handleSubmitMapping} progress={progress} />
-                </div>
-              )}
-            </>
-          )}
-        </main>
-        <FileModal show={showModal} onClose={() => setShowModal(false)} onSubmit={handleSubmitFiles} />
-        <SpinnerOverlay show={loading} />
-        <Footer />
-      </div>
-      {/* Modals */}
-      <NewCompanyModal show={showNewCompanyModal} onClose={() => setShowNewCompanyModal(false)} onSubmit={handleCreateCompany} />
-      <NewProjectModal show={showNewProjectModal} onClose={() => setShowNewProjectModal(false)} onSubmit={handleCreateProject} />
-      <MappingSubmittedModal show={showMappingSubmittedModal} onClose={handleCloseMappingSubmittedModal} />
-    </div>
+            </main>
+            <FileModal show={showModal} onClose={() => setShowModal(false)} onSubmit={handleSubmitFiles} />
+            <SpinnerOverlay show={loading} />
+            <Footer />
+          </div>
+          {/* Modals */}
+          <NewCompanyModal show={showNewCompanyModal} onClose={() => setShowNewCompanyModal(false)} onSubmit={handleCreateCompany} />
+          <NewProjectModal show={showNewProjectModal} onClose={() => setShowNewProjectModal(false)} onSubmit={handleCreateProject} />
+          <MappingSubmittedModal show={showMappingSubmittedModal} onClose={handleCloseMappingSubmittedModal} />
+        </div>
+      )}
+    </>
   );
 };
 

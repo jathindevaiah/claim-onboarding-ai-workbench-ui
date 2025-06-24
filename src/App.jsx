@@ -14,6 +14,7 @@ import MappingSubmittedModal from "./components/MappingSubmittedModal";
 import Dashboard from "./components/Dashboard";
 import OnboardingProgress from "./components/OnboardingProgress";
 import LoginScreen from "./components/LoginScreen";
+import RightPane from "./components/RightPane";
 
 const App = () => {
   const [showModal, setShowModal] = useState(false);
@@ -31,6 +32,7 @@ const App = () => {
   // const [loginError, setLoginError] = useState("");
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("Claim Analyst"); // Default role
+  const [showMappingMetrics, setShowMappingMetrics] = useState(false);
 
   const [progress, setProgress] = useState({
     upload: false,
@@ -89,6 +91,7 @@ const App = () => {
       const response = await axios.post("http://localhost:3000/api/mapping", formData);
       setMappingData(response.data.mapping.data);
       setProgress((prev) => ({ ...prev, mappingGenerated: true }));
+      setShowMappingMetrics(true);
 
       // Add uploaded file names to the selected project under the selected company
       if (selectedCompany && selectedProject) {
@@ -102,6 +105,13 @@ const App = () => {
   };
 
   const handleSaveMapping = (editedData) => {
+    const company = companies.find((c) => c.name === selectedCompany);
+    const project = company?.projects.find((p) => p.name === selectedProject);
+
+    const mappingFiles = project?.files.filter((f) => f.startsWith(`${selectedProject}_version`)) || [];
+    const nextVersion = mappingFiles.length + 1;
+    const fileName = `${selectedProject}_version${nextVersion}.json`;
+
     const payload = {
       success: true,
       mapping: {
@@ -110,21 +120,17 @@ const App = () => {
       },
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    saveAs(blob, `${selectedProject}_mapping.json`);
+    saveAs(blob, fileName);
 
-    // Add mapping.json to the selected project under the selected company
     if (selectedCompany && selectedProject) {
-      handleAddMappingFile(selectedCompany, selectedProject, `${selectedProject}_mapping.json`);
+      handleAddMappingFile(selectedCompany, selectedProject, fileName);
     }
     setProgress((prev) => ({ ...prev, mappingSaved: true }));
   };
 
   const handleSubmitMapping = () => {
-    // setProgress((prev) => ({ ...prev, etlCompleted: true }));
-    // setTimeout(() => {
-    //   setProgress((prev) => ({ ...prev, onboardingComplete: true }));
-    // }, 5000);
     setShowMappingSubmittedModal(true);
+    setShowMappingMetrics(false);
   };
 
   const handleAddFilesToProject = (companyName, projectName, fileNames) => {
@@ -186,7 +192,8 @@ const App = () => {
                 padding: "20px 0",
                 // background: "#23395d",
                 // color: "#fff",
-                minHeight: "100vh",
+                minHeight: "70vh",
+                marginTop: "70px",
               }}
             >
               <CompaniesPane
@@ -239,18 +246,6 @@ const App = () => {
                   {selectedCompany && selectedProject && (
                     <>
                       <OnboardingProgress progress={progress} />
-                      {/* <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
-            <div className="d-flex justify-content-center align-items-center">
-              {!mappingData && (
-            <button
-              className="btn btn-primary"
-              style={{ fontSize: "1.5rem", maxWidth: "400px", width: "100%" }}
-              onClick={() => setShowModal(true)}
-            >
-              Start Onboarding
-            </button>
-              )}
-            </div> */}
                       {!isMappingStarted && (
                         <>
                           <h1 className="text-center mb-4">{`${selectedProject} Claim Onboarding`}</h1>
@@ -275,6 +270,7 @@ const App = () => {
                       )}
                     </>
                   )}
+                  <RightPane show={true} showMappingMetrics={showMappingMetrics} />
                 </>
               )}
             </main>
@@ -282,6 +278,7 @@ const App = () => {
             <SpinnerOverlay show={loading} />
             <Footer />
           </div>
+
           {/* Modals */}
           <NewCompanyModal show={showNewCompanyModal} onClose={() => setShowNewCompanyModal(false)} onSubmit={handleCreateCompany} />
           <NewProjectModal show={showNewProjectModal} onClose={() => setShowNewProjectModal(false)} onSubmit={handleCreateProject} />

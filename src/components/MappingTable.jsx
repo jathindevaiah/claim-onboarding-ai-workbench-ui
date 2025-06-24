@@ -26,7 +26,7 @@ const MappingTable = ({ data, onSave, onSubmit, progress }) => {
 
   return (
     <>
-      <div style={{ maxHeight: "500px", overflowY: editedData.length > 10 ? "auto" : "visible" }}>
+      <div style={{ maxHeight: "600px", overflowY: editedData.length > 10 ? "auto" : "visible" }}>
         <Table striped bordered hover>
           <thead>
             <tr>

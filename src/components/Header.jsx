@@ -1,18 +1,3 @@
-// // src/components/Header.jsx
-// import React from "react";
-// import { Navbar, Container } from "react-bootstrap";
-
-// const Header = () => (
-//   <Navbar bg="dark" variant="dark" expand="lg" className="fixed-top">
-//     <Container className="justify-content-center">
-//       <Navbar.Brand className="text-center w-100 fs-3">Claim Onboarding Workbench</Navbar.Brand>
-//     </Container>
-//   </Navbar>
-// );
-
-// export default Header;
-
-// src/components/Header.jsx
 import React from "react";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
@@ -43,7 +28,19 @@ const Header = ({ isLoggedIn, role, setRole, onLogout, onHome, user }) => {
           </Dropdown.Menu>
         </Dropdown>
         {/* App Title */}
-        <Navbar.Brand className="fs-3 flex-grow-1 text-center">Claim Onboarding Workbench</Navbar.Brand>
+        <Navbar.Brand
+          className="flex-grow-1 text-center"
+          style={{
+            fontSize: "2.5rem",
+            fontWeight: "bold",
+            fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif",
+            letterSpacing: "1px",
+            color: "#fff",
+            textShadow: "0 1px 4px rgba(0,0,0,0.15)",
+          }}
+        >
+          Claim Onboarding Workbench
+        </Navbar.Brand>
 
         {/* User Icon */}
         <span className="me-3" style={{ color: "#fff", fontSize: 22 }}>

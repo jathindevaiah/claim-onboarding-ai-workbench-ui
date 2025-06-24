@@ -21,7 +21,7 @@ const SpinnerOverlay = ({ show }) => {
       <div className="spinner-border text-primary" style={{ width: 60, height: 60, fontSize: 32 }} role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
-      <div style={{ marginTop: 24, fontSize: "1.25rem", color: "#23395d", fontWeight: "bold" }}>Creating mapping through AI magic!!</div>
+      <div style={{ marginTop: 24, fontSize: "1.25rem", color: "#23395d", fontWeight: "bold" }}>Please wait. Generating mapping using AI !!</div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { FaFolder, FaFile } from "react-icons/fa";
 
 const CompaniesPane = ({ companies, selectedCompany, selectedProject, onSelectCompany, onSelectProject }) => (
   <div>
-    <h4 style={{ marginLeft: "20px" }}>Companies</h4>
+    <h4 style={{ marginLeft: "20px" }}>TPA Projects</h4>
     <ul style={{ listStyle: "none", paddingLeft: 0 }}>
       {companies.map((company) => (
         <li key={company.name}>

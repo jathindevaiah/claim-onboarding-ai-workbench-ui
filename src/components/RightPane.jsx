@@ -55,20 +55,8 @@ const RightPane = ({ show, showMappingMetrics }) => {
               <div style={{ fontWeight: "bold", textDecoration: "underline", marginBottom: 8 }}>Sedgwick</div>
               <div style={{ marginBottom: 4 }}>40 out of 40 mapped</div>
               <div>86 out of 100 mapped</div> */}
-              <MetricWidget
-                title="ECOS DC"
-                metrics={[
-                  { value: 35, total: 40 },
-                  { value: 80, total: 100 },
-                ]}
-              />
-              <MetricWidget
-                title="Sedgwick"
-                metrics={[
-                  { value: 40, total: 40 },
-                  { value: 86, total: 100 },
-                ]}
-              />
+              <MetricWidget title="ECOS DC" metrics={[{ value: 16, total: 40 }]} />
+              <MetricWidget title="Sedgwick" metrics={[{ value: 16, total: 16 }]} />
             </div>
           )}
         </div>
